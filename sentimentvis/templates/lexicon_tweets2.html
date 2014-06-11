@@ -1,0 +1,278 @@
+{% extends 'header_jumbotron.html' %}
+
+
+{% load temp_extras %}
+
+{% block main_content %}
+
+
+<div class="jumbotron">
+
+ <div class="container">
+
+<div class="bs-docs-section">
+  <h1 id="tabs" class="page-header">Emotions Detected <small> Tweet Analysis </small></h1>
+
+  <h2 id="tabs-examples">Emotions and sentiments </h2>
+  <p> Emotions and sentiments eXtracted using lexicon matching method with nrc emotion lexicon </p>
+  <div class="bs-example bs-example-tabs">
+    <ul id="myTab" class="nav nav-tabs">
+      <li class="active"><a href="#home" data-toggle="tab"> Tweet View </a></li>
+      <li><a href="#profile" data-toggle="tab"> Macro View </a></li>
+      <li class="dropdown">
+        <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Analysis <b class="caret"></b></a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+          <li><a href="#dropdown1" tabindex="-1" data-toggle="tab">@View Emotion Table </a></li>
+          <li><a href="#dropdown2" tabindex="-1" data-toggle="tab">@more_processing </a></li>
+        </ul>
+      </li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="home">
+
+ <!--  Beginning of Home  -->
+
+   <div class="tweets">
+<br>
+<br>
+
+   {% for li in ans %}
+<h4> <b> Emotions </b> </h4>
+      {% for l in li.emotion %}
+
+      
+  {% if l == 'disgust' %} 
+      <button type="button" class="btn btn-info">  {{ l }} </button>
+
+
+ {% elif l == 'anger' %} 
+      <button type="button" class="btn btn-danger">  {{ l }} </button>
+ 
+
+ {% elif l == 'fear' %} 
+      <button type="button" class="btn btn-warning">  {{ l }} </button>
+  
+
+ {% elif l == 'trust' %} 
+      <button type="button" class="btn btn-success">  {{ l }} </button>
+  
+
+ {% elif l == 'anticipation' %} 
+      <button type="button" class="btn btn-primary">  {{ l }} </button>
+  
+
+ {% elif l == 'joy' %} 
+      <button type="button" class="btn btn-success">  {{ l }} </button>
+  
+
+ {% elif l == 'surprise' %} 
+      <button type="button" class="btn btn-default">  {{ l }} </button>
+  
+
+ {% elif l == 'sadness' %} 
+      <button type="button" class="btn btn-danger">  {{ l }} </button>
+ 
+
+ {% elif l == 'positive' %} 
+  
+<div class="btn-group dropup">
+  <button type="button" class="btn btn-default">Positive</button>
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <!-- Dropdown menu links -->
+    <li> <a href="#">  Action </a> </li>
+    <li> <a href="#"> Another Action </a> </li>
+    <li><a href="#">Something else here</a></li>
+    <li class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  
+  </ul>
+</div>
+ 
+
+ {% elif l == 'negative' %} 
+  
+<div class="btn-group">
+  <button type="button" class="btn btn-default"> Negative </button>
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#">Action</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div>
+ 
+  {% endif %}
+
+      {% endfor %}
+
+   <div class="bs-example">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Tweet Text</th>
+          <th>User Name</th>
+          <th>Time and Date</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr>
+     
+          <td> <div class="well">{{ li.tweet.text }} </div> </td> 
+          <td> {{ li.tweet.user }} </td>
+          <td> {{ li.tweet.date }}</td>
+        </tr>
+     
+       
+      </tbody>
+    </table>
+  </div>
+
+
+  {% endfor %}   
+      
+      </div>
+
+<!--   End of Home    -->
+
+
+      </div>
+
+      <div class="tab-pane fade" id="profile">
+        <p>
+    
+<!-- macro level view will come here  -->
+<table class="table table-bordered table-striped">
+
+<tr>
+<td>
+<h2>  <span class="label label-success"> Positive </span> {{macro | posinegi:"up" }} <span class="glyphicon glyphicon-thumbs-up"> </span> </h2>
+</td>
+
+<td>
+ <h2> <span class="label label-danger"> Negative </span>{{ macro | posinegi:"down" }} <span class="glyphicon glyphicon-thumbs-down"> </span> </h2>
+</td>
+</table>
+
+<h1>  <span class="label label-default">  Sadness   </span>  {{ macro | percen:"sadness" }} %  </h1>
+
+<h1>  <span class="label label-default">  Anger   </span>  {{ macro | percen:"anger" }} % </h1>
+
+
+<h1>  <span class="label label-default">  Fear   </span>  {{ macro | percen:"fear" }} % </h1>
+
+<h1>  <span class="label label-default">  Trust   </span>  {{ macro | percen:"trust" }} % </h1>
+
+<h1>  <span class="label label-default">  Disgust   </span>  {{ macro | percen:"disgust" }} % </h1>
+<h1>  <span class="label label-default">  Anticipation   </span>  {{ macro | percen:"anticipation" }} % </h1>
+
+<h1>  <span class="label label-default">  Joy   </span>  {{ macro | percen:"joy" }} % </h1>
+<h1>  <span class="label label-default">  Surprise   </span> {{ macro | percen:"surprise" }} %  </h1>
+
+
+
+        </p>
+      </div>
+      <div class="tab-pane fade" id="dropdown1">
+        <p>
+<!-- here will come the emotion table -->
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+       <tr>
+         <th style="width: 100px;">Emotion</th>
+         <th style="width: 100px;"> freq</th>
+         <th style="width: 50px;">present</th>
+         <th>description</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>sadness</td>
+         <td>  {{ macro.sadness }}</td>
+         <td>{% if macro.sadness == 0 %} false {% else %} true {% endif %}</td>
+         <td> description </td>
+       </tr>
+       <tr>
+         <td>anger</td>
+         <td>  {{ macro.anger }} </td>
+         <td> {% if macro.anger == 0 %} false {% else %} true {% endif %}</td>
+         <td> description </td>
+       </tr>
+       <tr>
+         <td>fear</td>
+         <td> {{ macro.fear }}  </td>
+         <td>{% if macro.fear == 0 %} false {% else %} true {% endif %}</td>
+         <td> description </td>
+       </tr>
+       <tr>
+         <td>trust</td>
+         <td>  {{ macro.trust }} </td>
+         <td>  {% if macro.trust == 0 %} false {% else %} true {% endif %}  </td>
+         <td>description </td>
+       </tr>
+       <tr>
+         <td>disgust</td>
+         <td> {{ macro.disgust }} </td>
+         <td>{% if macro.disgust == 0 %} false {% else %} true {% endif %} </td>
+         <td> description </td>
+       </tr>
+       <tr>
+         <td>anticipation</td>
+         <td>  {{ macro.anticipation }}</td>
+         <td> {% if macro.anticipation == 0 %} false {% else %} true {% endif %}</td>
+         <td>description </td>
+       </tr>
+       <tr>
+         <td> joy </td>
+         <td>  {{ macro.joy }} </td>
+         <td>{% if macro.joy == 0 %} false {% else %} true {% endif %}</td>
+         <td>
+          description
+         </td>
+       </tr>
+       <tr>
+         <td> surprise </td>
+         <td>  {{ macro.surprise }} </td>
+         <td> {% if macro.surprise == 0 %} false {% else %} true {% endif %}</td>
+         <td>
+          description
+         </td>
+       </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+
+       </p>
+      </div>
+      <div class="tab-pane fade" id="dropdown2">
+        <p>  This is just a sample link for further processing on tweets operation. </p>
+      </div>
+    </div>
+  </div><!-- /example -->
+
+
+
+
+ </div>
+
+</div>
+
+
+
+
+{% endblock main_content %}
